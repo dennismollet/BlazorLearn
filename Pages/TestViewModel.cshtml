@@ -1,0 +1,23 @@
+@page "/testviewmodel"
+@inject Blazor.ViewModels.TestViewModel ViewModel
+
+<p>Count: </p>
+<input type="number" old-value="6" bind="ViewModel.Counter" />
+<button onclick="@ViewModel.Increment">Increment</button>
+
+<button onclick="@(async () => await ViewModel.Post())">Post</button>
+<button onclick="@(async () => await ViewModel.Put())">Put</button>
+
+<button onclick="@(async () => await ViewModel.Load())">Load</button>
+<table class="table">
+    <thead>
+        <th>Header</th>
+    </thead>
+    <tbody>
+        @foreach (var person in ViewModel.People)
+        {
+            <tr>@person.Name</tr>
+        }
+    </tbody>
+</table>
+

@@ -1,0 +1,61 @@
+@using Blazor.Components
+
+<table class="table">
+    <thead>
+        <tr colspan="@ViewModel.GridDefinition.Headers?.Max(h => h.Columns?.Count())
+            "><button onclick="@(async() => await Put())">Put</button> <button onclick="@(async () => await Post())">Post</button></tr>
+        @foreach(GridHeader header in ViewModel.GridDefinition.Headers)
+        {
+            <tr>
+                @foreach(GridHeaderColumn column in header.Columns) 
+                {                
+                    @((MarkupString)column.BuildElement())
+                }
+            </tr>
+        }        
+    </thead>
+    <tbody>
+            @foreach(GridRow row in ViewModel.GridDefinition.Rows)
+            {
+                <tr>
+                    @foreach(string value in row.Values)
+                    {
+                        <td>@value</td>
+                    }
+                </tr>            
+            }
+    </tbody>
+    <tfoot>
+        @foreach(GridFooter footer in ViewModel.GridDefinition.Footers)
+        {
+            <tr>
+                @foreach(string value in footer.Values)
+                {
+                    <td>@value</td>
+                }
+            </tr>
+        }|
+    </tfoot>
+</table>
+
+@functions{    
+    [Parameter] Blazor.ViewModels.GridViewModel ViewModel {get;set;}  
+        
+    protected override async Task OnInitAsync()
+    {
+        await ViewModel.Load();
+        this.StateHasChanged();
+    }
+
+    internal async Task Put()
+    {
+        await ViewModel.Put();
+        this.StateHasChanged();
+    }
+
+    internal async Task Post()
+    {
+        await ViewModel.Post();
+        this.StateHasChanged();
+    }
+}
