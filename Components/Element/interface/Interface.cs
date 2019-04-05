@@ -19,9 +19,10 @@ namespace Blazor.HtmlElements
 
     // }
 
-    public interface INestableElement
+    public interface INestableElement : IRenderElement
     {
         void AddElement(IRenderElement element);
+        string RenderChildren();
     }
 
     public interface IValueElement
@@ -29,5 +30,9 @@ namespace Blazor.HtmlElements
         string Value { get; }
     }
 
-
+    public interface IHtmlAttribute
+    {
+        string BuildAttribute();
+        string Key {get;}
+    }
 }

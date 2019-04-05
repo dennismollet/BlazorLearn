@@ -105,14 +105,9 @@ namespace Blazor.Components
             CssClasses = cssClasses;
         }
 
-        protected override string Tag => throw new System.NotImplementedException();
+        public override string Tag => throw new System.NotImplementedException();
 
         string ColSpan { get; set; }
-
-        public override string BuildElementString()
-        {
-            throw new System.NotImplementedException();
-        }
 
         protected override string BuildAttributes() => ColSpan.Length > 0 ? $"colspan='{ColSpan}'" : "";
         //protected override string GetElementTag() => "th";
