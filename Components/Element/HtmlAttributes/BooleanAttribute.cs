@@ -11,7 +11,7 @@ namespace Blazor.HtmlElements
         protected string _Key {get;set;}
         public override string Key => _Key;
 
-        public override string BuildAttribute()
+        public override string BuildAttributeString()
         {
             return $"{Key}";
         }

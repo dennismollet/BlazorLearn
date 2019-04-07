@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Blazor.HtmlElements
 {
@@ -18,9 +19,16 @@ namespace Blazor.HtmlElements
         public List<string> Values => _Values;
 
         protected virtual string Separator => " ";
-        public override string BuildAttribute()
+        public override string BuildAttributeString()
         {
-            return $"{Key}='{string.Join(Separator, Values)}'";
+            if(Values.Any(s => s.Contains("\"")))
+            {
+                return $"{Key}='{string.Join(Separator, Values)}'";
+            }
+            else
+            {
+            return $"{Key}=\"{string.Join(Separator, Values)}\"";
+            }
         }
     }
 }

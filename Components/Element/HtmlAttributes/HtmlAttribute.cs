@@ -1,6 +1,6 @@
 namespace Blazor.HtmlElements
 {
-    public abstract class HtmlAttribute : IHtmlAttribute
+    public abstract class HtmlAttribute : IBuildAttributeString
     {
         public HtmlAttribute()
         {
@@ -9,6 +9,6 @@ namespace Blazor.HtmlElements
 
         public abstract string Key {get;}
 
-        public abstract string BuildAttribute();
+        public abstract string BuildAttributeString();
     }
 }

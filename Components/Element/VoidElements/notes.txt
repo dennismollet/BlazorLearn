@@ -1,0 +1,15 @@
+--<area>
+--<base>
+--<br>
+<col> -> todo, represents a column in a table
+<embed>
+<hr>
+<img>
+<input>
+--<keygen>(HTML 5.2 Draft removed)
+<link>
+<meta>
+<param>
+<source>
+<track>
+<wbr>

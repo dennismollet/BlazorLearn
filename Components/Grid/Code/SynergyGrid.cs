@@ -83,13 +83,12 @@ namespace Blazor.Components
 
         public NormalHtmlElement(List<string> cssClasses)
         {
-            CssClasses = cssClasses;
+
         }
 
         protected List<HtmlElement> Elements { get; set; } = new List<HtmlElement>();
-        protected List<string> CssClasses { get; set; } = new List<string>();
+        
         protected abstract string BuildAttributes();
-        private string BuildCssClasses() => CssClasses.Count > 0 ? $"class=\"{string.Join(" ", CssClasses)}\"" : "";
 
         // public virtual string BuildElementStartTag() => $"<{GetElementTag()} {BuildCssClasses()} {BuildAttributes()}>";
         // public virtual string BuildElementEndTag() => $"</{GetElementTag()}>";
@@ -97,12 +96,11 @@ namespace Blazor.Components
 
     }
 
-    public class TableHeaderElement : NormalHtmlElement, IHtmlElement
+    public class TableHeaderElement : NormalHtmlElement
     {
         public TableHeaderElement(string colspan, List<string> cssClasses)
         {
             ColSpan = colspan;
-            CssClasses = cssClasses;
         }
 
         public override string Tag => throw new System.NotImplementedException();

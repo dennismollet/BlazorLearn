@@ -8,17 +8,6 @@ namespace Blazor.HtmlElements
         string Tag { get; }
     }
 
-    public interface ICssClass
-    {
-
-    }
-
-    // public interface IAttribute<T>
-    //     where T : IHtmlAttributeList
-    // {
-
-    // }
-
     public interface INestableElement : IRenderElement
     {
         void AddElement(IRenderElement element);
@@ -30,9 +19,31 @@ namespace Blazor.HtmlElements
         string Value { get; }
     }
 
-    public interface IHtmlAttribute
+    public interface IAttributeElement
     {
-        string BuildAttribute();
+        IBuildAttributesString Attributes {get;}
+    }
+
+    public interface IBuildAttributesString
+    {
+        void AddAttribute(IBuildAttributeString attribute);
+        string BuildAttributesString();
+    }
+    public interface IBuildAttributeString
+    {
+        
+        string BuildAttributeString();
         string Key {get;}
     }
+
+    public interface IAreaShape
+    {
+        IBuildAttributeString BuildAreaAttribute();
+    }
+    
+    public interface IAreaCoordinates
+    {
+        IBuildAttributeString BuildCoordinatesAttribute();
+    }
+
 }

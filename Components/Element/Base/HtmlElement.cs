@@ -3,35 +3,65 @@ using System.Linq;
 
 namespace Blazor.HtmlElements
 {
-    public abstract class HtmlElement : IHtmlElement
+    public abstract class HtmlElement : IRenderElement
     {
-        protected HtmlElement() { }
+        protected HtmlElement() 
+        {
+            CssClasses = new CssClassAttribute();
+        }
+
+        public void AddCssClass(string name)
+        {
+            ((CssClassAttribute)CssClasses).AddClass(name);
+        }
+
+        public void AddCssClasses(IEnumerable<string> names)
+        {
+            ((CssClassAttribute)CssClasses).AddClasses(names);
+        }
+        public IBuildAttributeString CssClasses {get;}
+
+        public virtual string RenderElement() => HtmlElementHelper.BuildElementString(this);
         public abstract string Tag { get; }
     }
 
-    public static class HtmlElementHelper
+    internal static class HtmlElementHelper
     {
-        public static string BuildVoidElementString(string tag)
+        internal static string BuildVoidElementString(string tag)
         {
             return $"<{tag} />";
         }
 
-        public static string BuildElementString(IRenderElement element)
+        private static string BuildAttributeString(IAttributeElement element) => element.Attributes.BuildAttributesString();
+
+        /// <summary>
+        /// Render the element with its children and attributes
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="attributes"></param>
+        /// <returns></returns>
+        internal static string BuildElementString(IRenderElement element)
         {
-            return $"<{element.Tag}></{element.Tag}>";
+            string classes = string.Empty;            
+            string attributes = string.Empty;
+            string innerHtml = string.Empty;
+
+            classes = $" {((HtmlElement)element).CssClasses.BuildAttributeString()}";
+            
+            if(element is IAttributeElement)
+            {
+                attributes += $" {BuildAttributeString((IAttributeElement)element)}";                
+            }
+
+            if(element is INestableElement)
+            {
+                innerHtml = ((INestableElement)element).RenderChildren();
+            }
+
+            return $"<{element.Tag}{classes}{attributes}>{innerHtml}</{element.Tag}>";
         }
 
-        public static string BuildElementString(IRenderElement element, HtmlAttributes attributes)
-        {
-            return $"<{element.Tag} {attributes.BuildAttributesString()}></{element.Tag}>";
-        }
-
-        public static string BuildElementString(INestableElement element, HtmlAttributes attributes)
-        {
-            return $"<{element.Tag} {attributes.BuildAttributesString()}>{element.RenderChildren()}</{element.Tag}>";
-        }
-
-        public static string RenderChildren(List<IRenderElement> children)
+        internal static string RenderChildren(List<IRenderElement> children)
         {
             return string.Join("", children.Select(e => e.RenderElement()));
         }

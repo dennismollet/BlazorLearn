@@ -17,9 +17,16 @@ namespace Blazor.HtmlElements
         protected string _Value {get;set;}
         public string Value => _Value;
 
-        public override string BuildAttribute()
+        public override string BuildAttributeString()
         {
-            return $"{Key}='{Value}'";
-        }
+            if(Value.Contains("\""))
+            {
+                return $"{Key}='{Value}'";
+            }
+            else
+            {
+                return $"{Key}=\"{Value}\"";
+            }
+        } 
     }
 }
