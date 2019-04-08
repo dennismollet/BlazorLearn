@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 namespace Blazor.HtmlElements
 {
-    public class Html : HtmlElement, INestableElement
+    public class HtmlElement : HtmlBaseElement, INestableElement
     {
-        public Html()
+        public HtmlElement()
             : base()
         {
 

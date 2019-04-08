@@ -1,18 +1,18 @@
 using System.Collections.Generic;
 
-namespace  Blazor.HtmlElements
+namespace Blazor.HtmlElements
 {
-    public class TableBodyElement : HtmlElement, INestableElement, IAttributeElement
+    public class TableBodyElement : HtmlBaseElement, INestableElement, IAttributeElement
     {
         public TableBodyElement()
-            :base()
+            : base()
         {
             Attributes = new HtmlAttributes();
         }
 
         public override string Tag => "tbody";
 
-        protected List<IRenderElement> Elements {get;set;} = new List<IRenderElement>();
+        protected List<IRenderElement> Elements { get; set; } = new List<IRenderElement>();
 
         public void AddElement(IRenderElement element) => Elements.Add(element);
 

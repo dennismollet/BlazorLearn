@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Blazor.HtmlElements
 {
-    public class TableElement : HtmlElement, IRenderElement, IAttributeElement
+    public class TableElement : HtmlBaseElement, IRenderElement, IAttributeElement
     {
         public TableElement()
         {
@@ -14,10 +14,10 @@ namespace Blazor.HtmlElements
         }
 
         public override string Tag => "table";
-        
-        public TableHeaderElement Header {get;}
-        public TableBodyElement Body {get;}
-        public TableFooterElement Footer {get;}
+
+        public TableHeaderElement Header { get; }
+        public TableBodyElement Body { get; }
+        public TableFooterElement Footer { get; }
         public override string RenderElement() => $"<{Tag}>{Header.RenderElement()}{Body.RenderElement()}{Footer.RenderElement()}</{Tag}>";
         string[] ValidTags => new string[] { "thead", "tbody", "tfoot" };
         public IBuildAttributesString Attributes { get; }

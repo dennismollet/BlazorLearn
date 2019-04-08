@@ -1,11 +1,11 @@
 namespace Blazor.HtmlElements
 {
-    public class BreakElement : HtmlElement, IRenderElement
+    public class BreakElement : HtmlBaseElement, IRenderElement
     {
         public BreakElement()
-            :base()
+            : base()
         {
-            
+
         }
 
         public override string Tag => "br";

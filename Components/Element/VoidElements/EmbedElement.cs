@@ -1,9 +1,9 @@
 namespace Blazor.HtmlElements
 {
-    public class EmbedElement : HtmlElement, IRenderElement, IAttributeElement
+    public class EmbedElement : HtmlBaseElement, IRenderElement, IAttributeElement
     {
         public EmbedElement(decimal height, string src, MimeType mimeType, decimal width)
-            :base()
+            : base()
         {
             Attributes = new HtmlAttributes();
             Attributes.AddAttribute(new ValueAttribute("height", height.ToString()));

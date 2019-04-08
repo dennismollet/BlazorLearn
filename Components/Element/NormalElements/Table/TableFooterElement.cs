@@ -1,21 +1,21 @@
 using System.Collections.Generic;
 
-namespace  Blazor.HtmlElements
+namespace Blazor.HtmlElements
 {
-    public class TableFooterElement : HtmlElement, INestableElement, IAttributeElement
+    public class TableFooterElement : HtmlBaseElement, INestableElement, IAttributeElement
     {
         public TableFooterElement()
-            :base()
+            : base()
         {
             Attributes = new HtmlAttributes();
         }
 
         public override string Tag => "tfoot";
 
-        protected List<IRenderElement> Elements {get;set;} = new List<IRenderElement>();
+        protected List<IRenderElement> Elements { get; set; } = new List<IRenderElement>();
 
         public void AddElement(IRenderElement element) => Elements.Add(element);
-        
+
         public string RenderChildren() => HtmlElementHelper.RenderChildren(Elements);
         public IBuildAttributesString Attributes { get; }
     }

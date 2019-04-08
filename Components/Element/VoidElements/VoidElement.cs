@@ -1,6 +1,6 @@
 namespace Blazor.HtmlElements
 {
-    public abstract class VoidElement : HtmlElement, IRenderElement, IAttributeElement
+    public abstract class VoidElement : HtmlBaseElement, IRenderElement, IAttributeElement
     {
         public VoidElement()
         {

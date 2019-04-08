@@ -74,7 +74,7 @@ namespace Blazor.Components
 
 
 
-    public abstract class NormalHtmlElement : HtmlElement
+    public abstract class NormalHtmlElement : HtmlBaseElement
     {
         public NormalHtmlElement()
         {
@@ -86,8 +86,8 @@ namespace Blazor.Components
 
         }
 
-        protected List<HtmlElement> Elements { get; set; } = new List<HtmlElement>();
-        
+        protected List<HtmlBaseElement> Elements { get; set; } = new List<HtmlBaseElement>();
+
         protected abstract string BuildAttributes();
 
         // public virtual string BuildElementStartTag() => $"<{GetElementTag()} {BuildCssClasses()} {BuildAttributes()}>";

@@ -2,10 +2,10 @@ using System.Collections.Generic;
 
 namespace Blazor.HtmlElements
 {
-    public abstract class InputElement : HtmlElement, IRenderElement, IAttributeElement
+    public abstract class InputElement : HtmlBaseElement, IRenderElement, IAttributeElement
     {
         public InputElement()
-            :base()
+            : base()
         {
             Attributes = new HtmlAttributes();
         }
