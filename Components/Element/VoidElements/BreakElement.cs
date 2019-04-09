@@ -1,6 +1,6 @@
 namespace Blazor.HtmlElements
 {
-    public class BreakElement : HtmlBaseElement, IRenderElement
+    public class BreakElement : VoidElement, IRenderElement
     {
         public BreakElement()
             : base()

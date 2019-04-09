@@ -1,6 +1,39 @@
 @page "/Grid"
 @inject Blazor.ViewModels.GridViewModel ViewModel
+@using Blazor.HtmlElements
 
 <h1>Grid</h1>
 
 <SynergyGridTemplate ViewModel=@ViewModel></SynergyGridTemplate>
+<div></div>
+@((MarkupString)BuildHtml())
+
+
+@functions{
+    string BuildHtml()
+    {
+        //TableElement el = new TableElement();
+        //el.AddCssClass("table");
+
+        DivElement div = new DivElement();
+
+        Console.WriteLine(typeof(DivElement));
+        Console.WriteLine(div.GetType());
+
+        Console.WriteLine(div.Tag);
+
+        Console.WriteLine(div.RenderElement());
+        
+        InputElement maleRadio = new RadioInputElement("Gender", "Male");
+        InputElement femaleRadio = new RadioInputElement("Gender", "Female");
+        InputElement noneRadio = new RadioInputElement("Gender", "None");
+
+        //need LabelElement and SpanElement
+        div.AddElement(maleRadio);
+        div.AddElement(femaleRadio);
+        div.AddElement(noneRadio);
+
+        Console.WriteLine(div.RenderElement());
+        return div.RenderElement();
+    }
+}

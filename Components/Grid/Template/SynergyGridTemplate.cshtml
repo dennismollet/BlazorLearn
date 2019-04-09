@@ -2,8 +2,7 @@
 
 <table class="table">
     <thead>
-        <tr colspan="@ViewModel.GridDefinition.Headers?.Max(h => h.Columns?.Count())
-            "><button onclick="@(async() => await Put())">Put</button> <button onclick="@(async () => await Post())">Post</button></tr>
+        <tr colspan="@ViewModel.GridDefinition.Headers?.Max(h => h.Columns?.Count())"><button onclick="@(async() => await Put())">Put</button> <button onclick="@(async () => await Post())">Post</button></tr>
         @foreach(GridHeader header in ViewModel.GridDefinition.Headers)
         {
             <tr>

@@ -6,6 +6,8 @@ namespace Blazor.HtmlElements
     {
         string RenderElement();
         string Tag { get; }
+        string InnerHtmlText { get; }
+        void SetInnerHtmlText(string text);
     }
 
     public interface INestableElement : IRenderElement

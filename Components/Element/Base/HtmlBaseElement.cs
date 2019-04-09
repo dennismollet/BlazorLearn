@@ -8,7 +8,15 @@ namespace Blazor.HtmlElements
         protected HtmlBaseElement()
         {
             CssClasses = new CssClassAttribute();
+            _InnerHtmlText = string.Empty;
         }
+
+        protected string _InnerHtmlText { get; set; }
+        public virtual void SetInnerHtmlText(string text)
+        {
+            _InnerHtmlText = text;
+        }
+        public string InnerHtmlText => _InnerHtmlText;
 
         public void AddCssClass(string name) => ((CssClassAttribute)CssClasses).AddClass(name);
 
@@ -21,9 +29,20 @@ namespace Blazor.HtmlElements
 
     internal static class HtmlElementHelper
     {
-        internal static string BuildVoidElementString(string tag)
+        internal static string BuildVoidElementString(IRenderElement element)
         {
-            return $"<{tag} />";
+            System.Console.WriteLine(element.Tag);
+            string classes = string.Empty;
+            string attributes = string.Empty;
+
+            classes = $" {((HtmlBaseElement)element).CssClasses.BuildAttributeString()}";
+
+            if (element is IAttributeElement)
+            {
+                attributes += $" {BuildAttributeString((IAttributeElement)element)}";
+            }
+
+            return $"<{element.Tag}{classes}{attributes} />";
         }
 
         private static string BuildAttributeString(IAttributeElement element) => element.Attributes.BuildAttributesString();
@@ -36,6 +55,7 @@ namespace Blazor.HtmlElements
         /// <returns></returns>
         internal static string BuildElementString(IRenderElement element)
         {
+            System.Console.WriteLine(element.Tag);
             string classes = string.Empty;
             string attributes = string.Empty;
             string innerHtml = string.Empty;
@@ -52,7 +72,7 @@ namespace Blazor.HtmlElements
                 innerHtml = ((INestableElement)element).RenderChildren();
             }
 
-            return $"<{element.Tag}{classes}{attributes}>{innerHtml}</{element.Tag}>";
+            return $"<{element.Tag}{classes}{attributes}>{element.InnerHtmlText}{innerHtml}</{element.Tag}>";
         }
 
         internal static string RenderChildren(List<IRenderElement> children)
