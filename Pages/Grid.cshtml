@@ -25,13 +25,32 @@
         Console.WriteLine(div.RenderElement());
         
         InputElement maleRadio = new RadioInputElement("Gender", "Male");
+        maleRadio.Attributes.AddAttribute(new ValueAttribute("id", "male"));
+        LabelElement maleLabel = new LabelElement("male");
+        maleLabel.SetInnerHtmlText("Male");
+
         InputElement femaleRadio = new RadioInputElement("Gender", "Female");
+        femaleRadio.Attributes.AddAttribute(new ValueAttribute("id", "female"));
+        LabelElement femaleLabel = new LabelElement("female");
+        femaleLabel.SetInnerHtmlText("Female");
+
         InputElement noneRadio = new RadioInputElement("Gender", "None");
+        noneRadio.Attributes.AddAttribute(new ValueAttribute("id", "none"));
+        LabelElement noneLabel = new LabelElement("none");
+        noneLabel.SetInnerHtmlText("None");
+
+        BreakElement br = new BreakElement();
 
         //need LabelElement and SpanElement
-        div.AddElement(maleRadio);
+        div.AddElement(maleRadio);        
+        div.AddElement(maleLabel);
+        div.AddElement(br);
         div.AddElement(femaleRadio);
+        div.AddElement(femaleLabel);
+        div.AddElement(br);
         div.AddElement(noneRadio);
+        div.AddElement(noneLabel);
+        div.AddElement(br);
 
         Console.WriteLine(div.RenderElement());
         return div.RenderElement();
