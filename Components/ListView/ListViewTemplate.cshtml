@@ -1,4 +1,4 @@
-<div>
+<div draggable="true" class="listviewborder">
     @foreach(var data in ViewModel.GetData())
     {
         <span><img class="selector" src='@data.GetProperty("src").GetPropertyValueString()' alt='expand'><span>@data.GetProperty("Name").GetPropertyValueString()</span></span><br>

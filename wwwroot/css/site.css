@@ -125,4 +125,8 @@ app {
         height:40px;
         width:40px;
     }
+    
+    div.listviewborder{
+        border: 2px black;
+    }
 }
