@@ -13,6 +13,7 @@ namespace Blazor
             services.AddSingleton<IPeopleService, PeopleService>();
             services.AddSingleton<TestViewModel>();
             services.AddSingleton<GridViewModel>();
+            services.AddSingleton<ListViewViewModel>();
         }
 
         public void Configure(IBlazorApplicationBuilder app)
