@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Blazor.HtmlElements
@@ -7,23 +8,12 @@ namespace Blazor.HtmlElements
         public HeadElement()
             : base()
         {
-
+            
         }
 
         public override string Tag => "head";
-
-        protected List<IRenderElement> Elements { get; set; } = new List<IRenderElement>();
-
-        public void AddElement(IRenderElement element)
-        {
-            if (ValidChildTags.Contains(element.Tag))
-            {
-                Elements.Add(element);
-            }
-        }
-
-        public string RenderChildren() => HtmlElementHelper.RenderChildren(Elements);
-
-        private List<string> ValidChildTags => new List<string> { "title", "style", "base", "link", "meta", "script", "noscript" };
+        public List<IRenderElement> ChildElements { get; } = new List<IRenderElement>();
+        public INestableElement AddChildElements(params IRenderElement[] elements) => HtmlElementHelper.AddChildElements(this, elements);
+        public List<string> ValidChildTags { get; } = new List<string> { "title", "style", "base", "link", "meta", "script", "noscript" };
     }
 }

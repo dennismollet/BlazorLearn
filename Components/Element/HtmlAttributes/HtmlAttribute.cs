@@ -8,7 +8,6 @@ namespace Blazor.HtmlElements
         }
 
         public abstract string Key {get;}
-
         public abstract string BuildAttributeString();
     }
 }

@@ -9,7 +9,7 @@ namespace Blazor.HtmlElements
 
         public IBuildAttributesString Attributes { get; }
 
-        public override void SetInnerHtmlText(string text){} //not valid on void element
+        public override IRenderElement SetInnerHtmlText(string text) { return this; } //not valid on void element
         public override string RenderElement() => HtmlElementHelper.BuildVoidElementString(this);
     }
 }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Blazor.HtmlElements
 {
-    public class CssClassAttribute : HtmlAttribute
+    public class CssClassAttribute : HtmlAttribute, IMultipleValueAttribute
     {
         internal CssClassAttribute()
         {
@@ -10,13 +10,9 @@ namespace Blazor.HtmlElements
         }
 
         public override string Key => "class";
-
         protected HashSet<string> Values {get;set;} = new HashSet<string>();
-
-        internal void AddClass(string name) => Values.Add(name);
-
-        internal void AddClasses(IEnumerable<string> names) => Values.UnionWith(names);
-
+        public void AddAttributeValues(params string[] names) => Values.UnionWith(names);
+        
         public override string BuildAttributeString()
         {
             if(Values.Count > 0)

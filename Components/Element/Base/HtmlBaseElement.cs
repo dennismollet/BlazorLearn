@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,16 +13,20 @@ namespace Blazor.HtmlElements
         }
 
         protected string _InnerHtmlText { get; set; }
-        public virtual void SetInnerHtmlText(string text)
+        public virtual IRenderElement SetInnerHtmlText(string text)
         {
             _InnerHtmlText = text;
+            return this;
         }
         public string InnerHtmlText => _InnerHtmlText;
 
-        public void AddCssClass(string name) => ((CssClassAttribute)CssClasses).AddClass(name);
+        public virtual IRenderElement AddCssClasses(params string[] names)
+        {
+            CssClasses.AddAttributeValues(names);
+            return this;
+        }
 
-        public void AddCssClasses(IEnumerable<string> names) => ((CssClassAttribute)CssClasses).AddClasses(names);
-        public IBuildAttributeString CssClasses { get; }
+        public IMultipleValueAttribute CssClasses { get; }
 
         public virtual string RenderElement() => HtmlElementHelper.BuildElementString(this);
         public abstract string Tag { get; }
@@ -53,14 +58,14 @@ namespace Blazor.HtmlElements
         /// <param name="element"></param>
         /// <param name="attributes"></param>
         /// <returns></returns>
-        internal static string BuildElementString(IRenderElement element)
+        internal static string BuildElementString(HtmlBaseElement element)
         {
             System.Console.WriteLine(element.Tag);
             string classes = string.Empty;
             string attributes = string.Empty;
             string innerHtml = string.Empty;
 
-            classes = $" {((HtmlBaseElement)element).CssClasses.BuildAttributeString()}";
+            classes = $" {element.CssClasses.BuildAttributeString()}";
 
             if (element is IAttributeElement)
             {
@@ -69,7 +74,7 @@ namespace Blazor.HtmlElements
 
             if (element is INestableElement)
             {
-                innerHtml = ((INestableElement)element).RenderChildren();
+                innerHtml = RenderChildren(((INestableElement)element).ChildElements);
             }
 
             return $"<{element.Tag}{classes}{attributes}>{element.InnerHtmlText}{innerHtml}</{element.Tag}>";
@@ -78,6 +83,23 @@ namespace Blazor.HtmlElements
         internal static string RenderChildren(List<IRenderElement> children)
         {
             return string.Join("", children.Select(e => e.RenderElement()));
+        }
+
+        internal static INestableElement AddChildElements(INestableElement element, params IRenderElement[]  childElementsToAdd)
+        {
+            foreach(var childElementToAdd in childElementsToAdd)
+            {
+                if (element.ValidChildTags?.Count == 0 || element.ValidChildTags.Contains(element.Tag))
+                {
+                    element.ChildElements.Add(childElementToAdd);
+                }
+                else
+                {
+                    Console.WriteLine($"Element <{childElementToAdd.Tag}> is not valid to be added as a child of <{element.Tag}>");
+                }
+            }
+
+            return element;
         }
     }
 }

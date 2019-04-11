@@ -42,15 +42,7 @@
         BreakElement br = new BreakElement();
 
         //need LabelElement and SpanElement
-        div.AddElement(maleRadio);        
-        div.AddElement(maleLabel);
-        div.AddElement(br);
-        div.AddElement(femaleRadio);
-        div.AddElement(femaleLabel);
-        div.AddElement(br);
-        div.AddElement(noneRadio);
-        div.AddElement(noneLabel);
-        div.AddElement(br);
+        div.AddChildElements(maleRadio, maleLabel, femaleRadio, femaleLabel, noneRadio, noneLabel);
 
         Console.WriteLine(div.RenderElement());
         return div.RenderElement();
