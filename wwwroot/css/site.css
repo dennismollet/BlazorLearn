@@ -127,6 +127,16 @@ app {
     }
     
     div.listviewborder{
-        border: 2px black;
+        border: 2px black solid;
+        width: 300px;
+    }
+
+    div.dropstyle{
+        border: 10px purple solid;
+        width: 300px;
+    }
+
+    span.listviewinner{
+        border:none;
     }
 }

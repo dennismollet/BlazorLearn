@@ -1,11 +1,68 @@
-<div draggable="true" class="listviewborder">
-    @foreach(var data in ViewModel.GetData())
-    {
-        <span><img class="selector" src='@data.GetProperty("src").GetPropertyValueString()' alt='expand'><span>@data.GetProperty("Name").GetPropertyValueString()</span></span><br>
-    }
-</div>
+
+
+
+@if(ViewModel.GetData().Count > 0)
+{
+    <div draggable="true" class="listviewborder" ondragstart="@(e => OnItemDragStart(e))" ondrag="@(e => OnItemDrag(e))" ondragend="@(e => OnItemDragEnd(e))">DragMe<br>
+
+        @foreach(var data in ViewModel.GetData())
+        {
+            <span class="listviewinner"><img class="selector" src='@data.GetProperty("src").GetPropertyValueString()' alt='expand'><span>@data.GetProperty("Name").GetPropertyValueString()</span></span><br>
+        }
+    </div>
+
+    <div ondragover="event.preventDefault()" ondragenter="@(e => OnContainerDragEnter(e))" ondrop="@(e => OnContainerDrop(e))" ondragleave="@(e => OnContainerDragLeave(e))" draggable="true" dropzone="listview" class="@dropstyle" >DragMe<br>
+
+        @foreach(var data in ViewModel.GetData())
+        {
+            <span class="listviewinner"><img class="selector" src='@data.GetProperty("src").GetPropertyValueString()' alt='expand'><span>@data.GetProperty("Name").GetPropertyValueString()</span></span><br>
+        }
+    </div>
+}
 
 
 @functions{    
-    [Parameter] Blazor.ViewModels.ListViewViewModel ViewModel {get;set;}  
+    string dropstyle = string.Empty;
+
+    [Parameter] Blazor.ViewModels.ListViewViewModel ViewModel {get;set;} 
+    
+    void OnItemDragStart(UIDragEventArgs e)
+    {                
+        //DragDropHelper.Item = dragItem;
+    }
+    
+    void OnItemDrag(UIDragEventArgs e)
+    {                
+        Console.WriteLine($"dragging: {e.ClientX}, {e.ClientY}");
+        //DragDropHelper.Item = dragItem;
+    }
+
+    void OnItemDragEnd(UIDragEventArgs e)
+    {                
+        Console.WriteLine($"drag ended");
+        //DragDropHelper.Item = dragItem;
+    }
+    
+    void OnContainerDragEnter(UIDragEventArgs e)
+    {
+        dropstyle = "dropstyle";
+    } 
+
+    void OnContainerDrop(UIDragEventArgs e)
+    {
+        dropstyle = string.Empty;
+        Console.WriteLine($"alt pressed: {e.AltKey}");
+        Console.WriteLine($"mouse button pressed: {e.Button}"); //left, middle, right
+        Console.WriteLine($"client coords: {e.ClientX}, {e.ClientY}");
+        Console.WriteLine($"datatransfer count: {e?.DataTransfer?.Items?.Length ?? 0}");
+        Console.WriteLine($"screen coords: {e.ScreenX}, {e.ScreenY}");
+
+        //DragDropHelper.Item.Index = newIndex;
+        //RefreshHandler();
+    }
+
+    void OnContainerDragLeave(UIDragEventArgs e)
+    {
+        dropstyle = String.Empty;
+    }
 }
