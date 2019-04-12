@@ -1,124 +1,17 @@
-
-<div class=list-wrapper>
-    <div class="list" >
-        <div class="list-header u-clearfix">
-            <div class="list-header-target">
-                <h2 class="list-header-name-assist">Recreation</h2>
-                <textarea class="@listHeaderCurrentClass" onfocus="@(() => ListHeaderNameFocusChanged(true))" onblur="@(() => ListHeaderNameFocusChanged(false))">Recreation</textarea>
-            </div>
-            <p class="list-header-num-cards">1 Card</p>
-            <div class="list-cards u-clearfix">
-                <a class="@anchorCurrentClass" href="#" onmouseover="@(() => AnchorMouseOverChanged(true))" onmouseout="@(() => AnchorMouseOverChanged(false))">
-                    <div class="list-card-cover"></div>
-                    <div class="list-card-details">
-                        <div class="list-card-labels"></div>
-                        <span class="list-card-title">
-                            <span class="card-short-id inline">#1</span>
-                            "Mua ha ha ha ha ha ha ha"
-                        </span>
-                    </div>
-                </a>
-            </div>            
-        </div>
-    </div>
-</div>
+@using Blazor.ViewModels
+@(IDrag<ListViewItemModel> dragItem)
 
 @if(ViewModel.GetData().Count > 0)
 {
-    <div draggable="true" class="listviewborder" ondragstart="@(e => OnItemDragStart(e))" ondrag="@(e => OnItemDrag(e))" ondragend="@(e => OnItemDragEnd(e))">DragMe<br>
-
-        @foreach(var data in ViewModel.GetData())
-        {
+    @foreach(var data in ViewModel.GetData())
+    {
+        @(dragItem = data as IDrag<ListViewItemModel>)
+        <div draggable="true" ondragstart="@(e => dragItem.OnItemDragStart(e, dragItem))" ondrag="@(e => dragItem.OnItemDrag(e, dragItem))" ondragend="@(e => dataItem.OnItemDragEnd(e, dragItem))">
             <span class="listviewinner"><img class="selector" src='@data.GetProperty("src").GetPropertyValueString()' alt='expand'><span>@data.GetProperty("Name").GetPropertyValueString()</span></span><br>
-        }
-    </div>
-
-    <div ondragover="event.preventDefault()" ondragenter="@(e => OnContainerDragEnter(e))" ondrop="@(e => OnContainerDrop(e))" ondragleave="@(e => OnContainerDragLeave(e))" draggable="true" dropzone="listview" class="@dropstyle" >DragMe<br>
-
-        @foreach(var data in ViewModel.GetData())
-        {
-            <span class="listviewinner"><img class="selector" src='@data.GetProperty("src").GetPropertyValueString()' alt='expand'><span>@data.GetProperty("Name").GetPropertyValueString()</span></span><br>
-        }
-    </div>
+        </div>
+    }
 }
 
-
 @functions{    
-    string dropstyle = string.Empty;
-    string listHeaderCurrentClass="list-header-name";
-    string listHeaderNotSelectedClass="list-header-name";
-    string listHeaderSelectedClass="list-header-name is-editing";
-
-    string anchorCurrentClass="list-card";
-    string anchorHoverClass="list-card active-card";
-    string anchorNotHoverClass="list-card";
-
-
     [Parameter] Blazor.ViewModels.ListViewViewModel ViewModel {get;set;} 
-    
-    void AnchorMouseOverChanged(bool mouseIsOver)
-    {
-        if(mouseIsOver)
-        {
-            anchorCurrentClass = anchorHoverClass;
-        }
-        else
-        {
-            anchorCurrentClass = anchorNotHoverClass;
-        }
-        //StateHasChanged();
-    }
-
-    void ListHeaderNameFocusChanged(bool focused)
-    {
-        if(focused)
-        {
-            listHeaderCurrentClass = listHeaderSelectedClass;
-        }
-        else
-        {
-            listHeaderCurrentClass = listHeaderNotSelectedClass;
-        }
-        //StateHasChanged();
-    }
-
-    void OnItemDragStart(UIDragEventArgs e)
-    {                
-        //DragDropHelper.Item = dragItem;
-    }
-    
-    void OnItemDrag(UIDragEventArgs e)
-    {                
-        Console.WriteLine($"dragging: {e.ClientX}, {e.ClientY}");
-        //DragDropHelper.Item = dragItem;
-    }
-
-    void OnItemDragEnd(UIDragEventArgs e)
-    {                
-        Console.WriteLine($"drag ended");
-        //DragDropHelper.Item = dragItem;
-    }
-    
-    void OnContainerDragEnter(UIDragEventArgs e)
-    {
-        dropstyle = "dropstyle";
-    } 
-
-    void OnContainerDrop(UIDragEventArgs e)
-    {
-        dropstyle = string.Empty;
-        Console.WriteLine($"alt pressed: {e.AltKey}");
-        Console.WriteLine($"mouse button pressed: {e.Button}"); //left, middle, right
-        Console.WriteLine($"client coords: {e.ClientX}, {e.ClientY}");
-        Console.WriteLine($"datatransfer count: {e?.DataTransfer?.Items?.Length ?? 0}");
-        Console.WriteLine($"screen coords: {e.ScreenX}, {e.ScreenY}");
-
-        //DragDropHelper.Item.Index = newIndex;
-        //RefreshHandler();
-    }
-
-    void OnContainerDragLeave(UIDragEventArgs e)
-    {
-        dropstyle = String.Empty;
-    }
 }
