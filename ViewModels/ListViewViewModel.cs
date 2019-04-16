@@ -73,17 +73,17 @@ namespace Blazor.ViewModels
         public string GetDragKey() => dragdropkey;
         public void OnItemDrag(UIDragEventArgs e, ListViewItemModel dataTransfer)
         {
-            throw new System.NotImplementedException();
+            System.Console.WriteLine("OnItemDrag");
         }
 
         public void OnItemDragEnd(UIDragEventArgs e, ListViewItemModel dataTransfer)
         {
-            throw new System.NotImplementedException();
+            System.Console.WriteLine("OnItemDragEnd");
         }
 
         public void OnItemDragStart(UIDragEventArgs e, ListViewItemModel dataTransfer)
         {
-            throw new System.NotImplementedException();
+            System.Console.WriteLine("OnItemDragStart");
         }
     }
 }

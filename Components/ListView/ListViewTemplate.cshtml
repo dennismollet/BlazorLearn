@@ -1,13 +1,11 @@
 @using Blazor.ViewModels
-@(IDrag<ListViewItemModel> dragItem)
 
 @if(ViewModel.GetData().Count > 0)
 {
-    @foreach(var data in ViewModel.GetData())
+    @foreach(var dragItem in ViewModel.GetData().Cast<ListViewItemModel>())
     {
-        @(dragItem = data as IDrag<ListViewItemModel>)
-        <div draggable="true" ondragstart="@(e => dragItem.OnItemDragStart(e, dragItem))" ondrag="@(e => dragItem.OnItemDrag(e, dragItem))" ondragend="@(e => dataItem.OnItemDragEnd(e, dragItem))">
-            <span class="listviewinner"><img class="selector" src='@data.GetProperty("src").GetPropertyValueString()' alt='expand'><span>@data.GetProperty("Name").GetPropertyValueString()</span></span><br>
+        <div draggable="true" ondragstart="@(e => dragItem.OnItemDragStart(e, dragItem))" ondrag="@(e => dragItem.OnItemDrag(e, dragItem))" ondragend="@(e => dragItem.OnItemDragEnd(e, dragItem))">
+            <span class="listviewinner"><img class="selector" src='@dragItem.GetProperty("src").GetPropertyValueString()' alt='expand'><span>@dragItem.GetProperty("Name").GetPropertyValueString()</span></span><br>
         </div>
     }
 }
