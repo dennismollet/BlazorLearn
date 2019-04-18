@@ -5,12 +5,21 @@ using Microsoft.AspNetCore.Blazor;
 
 namespace Blazor.ViewModels
 {
-    public class ListViewViewModel : IBindList, INotifyPropertyChanged, IDragDrop<ListViewItemModel>
+    public class ListViewViewModel : IBindList, INotifyPropertyChanged, IHandleDrag<ListViewItemModel>, IHandleDrop<ListViewItemModel>, IHandleDragOver<ListViewItemModel>
     {
-        public ListViewViewModel()
+        public ListViewViewModel(IDragEvents<ListViewItemModel> listViewDragEventHandler, IDropEvents<ListViewItemModel> listViewDropEventHandler, IDragOverEvents<ListViewItemModel> listViewDragOverEventHandler)
         {
+            ListViewDragEventHandler = listViewDragEventHandler;
+            ListViewDropEventHandler = listViewDropEventHandler;
+            ListViewDragOverEventHandler = listViewDragOverEventHandler;
         }
 
+        private IDragEvents<ListViewItemModel> ListViewDragEventHandler { get; }
+        private IDropEvents<ListViewItemModel> ListViewDropEventHandler { get; }
+        private IDragOverEvents<ListViewItemModel> ListViewDragOverEventHandler { get; }
+        public IDragEvents<ListViewItemModel> GetDragEventHandler(string key) => ListViewDragEventHandler;
+        public IDropEvents<ListViewItemModel> GetDropEventHandler(string key) => ListViewDropEventHandler;
+        public IDragOverEvents<ListViewItemModel> GetDragOverEventHandler(string key) => ListViewDragOverEventHandler;
         public List<IBind> GetData() => GetLocalData();
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -25,33 +34,25 @@ namespace Blazor.ViewModels
                                                         {
                                                             new BooleanProperty("Selected", false),
                                                             new StringProperty("Name", "Dennis"),
-                                                            new StringProperty("src", "/images/selector.jpg"),
-                                                            new StringProperty("dragdropkey", "1")
+                                                            new StringProperty("src", "/images/selector.jpg")
                                                         };
 
         private List<IProperty> GetProperties2() => new List<IProperty>
                                                         {
                                                             new BooleanProperty("Selected", false),
                                                             new StringProperty("Name", "Dave"),
-                                                            new StringProperty("src", "/images/selector.jpg"),
-                                                            new StringProperty("dragdropkey", "2")
+                                                            new StringProperty("src", "/images/selector.jpg")
                                                         };
 
         private List<IProperty> GetProperties3() => new List<IProperty>
                                                         {
                                                             new BooleanProperty("Selected", false),
                                                             new StringProperty("Name", "Aaron"),
-                                                            new StringProperty("src", "/images/selector.jpg"),
-                                                            new StringProperty("dragdropkey", "3")
+                                                            new StringProperty("src", "/images/selector.jpg")
                                                         };
-
-        public ListViewItemModel GetDataTransferItem(string transferItemKey)
-        {
-            return GetLocalData().FirstOrDefault(ld => ld.GetProperty("dragdropkey").GetPropertyValueString() == transferItemKey) as ListViewItemModel;
-        }
     }
 
-    public class ListViewItemModel : BindableBase, IDrag<ListViewItemModel>
+    public class ListViewItemModel : BindableBase
     {
         public ListViewItemModel(Dictionary<string, IProperty> properties)
             : base(properties)
@@ -68,22 +69,55 @@ namespace Blazor.ViewModels
         public bool Selected => ((BooleanProperty)_Properties["Selected"]).GetPropertyValue();
         public string Name => _Properties["Name"].GetPropertyValueString();
         public string src => _Properties["src"].GetPropertyValueString();
-        public string dragdropkey => _Properties["dragdropkey"].GetPropertyValueString();
+    }
 
-        public string GetDragKey() => dragdropkey;
+    public class ListViewItemDragEventHandler : IDragEvents<ListViewItemModel>
+    {
         public void OnItemDrag(UIDragEventArgs e, ListViewItemModel dataTransfer)
         {
-            System.Console.WriteLine("OnItemDrag");
+            System.Console.WriteLine($"Currently dragging {dataTransfer.Name}");
         }
 
         public void OnItemDragEnd(UIDragEventArgs e, ListViewItemModel dataTransfer)
         {
-            System.Console.WriteLine("OnItemDragEnd");
+            System.Console.WriteLine($"Finished dragging {dataTransfer.Name}");
         }
 
         public void OnItemDragStart(UIDragEventArgs e, ListViewItemModel dataTransfer)
         {
-            System.Console.WriteLine("OnItemDragStart");
+            System.Console.WriteLine($"Started dragging {dataTransfer.Name}");
+        }
+    }
+
+    public class ListViewItemDropEventHandler : IDropEvents<ListViewItemModel>
+    {
+        public void OnContainerDrop(UIDragEventArgs e, ListViewItemModel dataTransfer)
+        {
+            System.Console.WriteLine($"Dropped item {dataTransfer.Name}");
+
+            //System.Console.WriteLine($"alt pressed: {e.AltKey}");
+            //System.Console.WriteLine($"mouse button pressed: {e.Button}"); //left, middle, right
+            //System.Console.WriteLine($"client coords: {e.ClientX}, {e.ClientY}");
+            //System.Console.WriteLine($"datatransfer count: {e?.DataTransfer?.Items?.Length ?? 0}");
+            //System.Console.WriteLine($"screen coords: {e.ScreenX}, {e.ScreenY}");            
+        }
+    }
+
+    public class ListViewItemDragOverEventHandler : IDragOverEvents<ListViewItemModel>
+    {
+        public void OnContainerDragEnter(UIDragEventArgs e, ListViewItemModel dataTransfer)
+        {
+            System.Console.WriteLine($"DragEnter fired for {dataTransfer.Name}");
+        }
+
+        public void OnContainerDragLeave(UIDragEventArgs e, ListViewItemModel dataTransfer)
+        {
+            System.Console.WriteLine($"DragLeave fired for {dataTransfer.Name}");
+        }
+
+        public void OnDragOver(UIDragEventArgs e, ListViewItemModel dataTransfer)
+        {
+            System.Console.WriteLine($"DragOver fired for {dataTransfer.Name}");
         }
     }
 }

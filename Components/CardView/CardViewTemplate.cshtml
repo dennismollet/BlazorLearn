@@ -1,4 +1,5 @@
 @using Blazor.Components;
+@using Blazor.ViewModels;
 
 <div class=list-wrapper>
     <div class="list" >
@@ -36,6 +37,7 @@
 
 
     [Parameter] Blazor.ViewModels.CardViewViewModel ViewModel {get;set;} 
+    CardViewItemDragger Dragger => ViewModel.GetDragEventHandler(null) as CardViewItemDragger;
     
     void AnchorMouseOverChanged(bool mouseIsOver)
     {
@@ -80,10 +82,6 @@
         //DragDropHelper.Item = dragItem;
     }
     
-    void OnContainerDragEnter(UIDragEventArgs e)
-    {
-        dropstyle = "dropstyle";
-    } 
 
     void OnContainerDrop(UIDragEventArgs e)
     {
@@ -98,6 +96,10 @@
         //RefreshHandler();
     }
 
+    void OnContainerDragEnter(UIDragEventArgs e)
+    {
+        dropstyle = "dropstyle";
+    } 
     void OnContainerDragLeave(UIDragEventArgs e)
     {
         dropstyle = String.Empty;

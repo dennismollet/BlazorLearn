@@ -1,15 +1,29 @@
 @using Blazor.ViewModels
+@using System.Linq
 
 @if(ViewModel.GetData().Count > 0)
-{
-    @foreach(var dragItem in ViewModel.GetData().Cast<ListViewItemModel>())
-    {
-        <div draggable="true" ondragstart="@(e => dragItem.OnItemDragStart(e, dragItem))" ondrag="@(e => dragItem.OnItemDrag(e, dragItem))" ondragend="@(e => dragItem.OnItemDragEnd(e, dragItem))">
-            <span class="listviewinner"><img class="selector" src='@dragItem.GetProperty("src").GetPropertyValueString()' alt='expand'><span>@dragItem.GetProperty("Name").GetPropertyValueString()</span></span><br>
-        </div>
-    }
+{  
+    <div class="list-viewwrapper">
+        @foreach(var listItem in ViewModel.GetData().Cast<ListViewItemModel>())
+        {
+            <div draggable="true" ondragstart="@(e => DragHandler.OnItemDragStart(e, listItem))" ondrag="@(e => DragHandler.OnItemDrag(e, listItem))" ondragend="@(e => DragHandler.OnItemDragEnd(e, listItem))">
+                <span class="listviewinner"><img class="selector" src='@listItem.GetProperty("src").GetPropertyValueString()' alt='expand'><span>@listItem.GetProperty("Name").GetPropertyValueString()</span></span><br>
+            </div>
+        }   
+    </div>
+    <div class="list-viewwrapper">
+        @foreach(var listItem in ViewModel.GetData().Cast<ListViewItemModel>())
+        {
+            <div draggable="true" ondragstart="@(e => DragHandler.OnItemDragStart(e, listItem))" ondrag="@(e => DragHandler.OnItemDrag(e, listItem))" ondragend="@(e => DragHandler.OnItemDragEnd(e, listItem))">
+                <span class="listviewinner"><img class="selector" src='@listItem.GetProperty("src").GetPropertyValueString()' alt='expand'><span>@listItem.GetProperty("Name").GetPropertyValueString()</span></span><br>
+            </div>
+        }   
+    </div>
 }
 
 @functions{    
     [Parameter] Blazor.ViewModels.ListViewViewModel ViewModel {get;set;} 
+    ListViewItemDragEventHandler DragHandler => ViewModel.GetDragEventHandler(null) as ListViewItemDragEventHandler;
+    ListViewItemDropEventHandler DropHandler => ViewModel.GetDropEventHandler(null) as ListViewItemDropEventHandler;
+    ListViewItemDragOverEventHandler DragOverHandler => ViewModel.GetDragOverEventHandler(null) as ListViewItemDragOverEventHandler;
 }

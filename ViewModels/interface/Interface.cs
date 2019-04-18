@@ -26,34 +26,59 @@ namespace Blazor.ViewModels
     }
 
     /// <summary>
-    /// Should be implemented on the 'viewmodel' that has components that can be dragged or dropped
+    /// Should be implemented on the 'viewmodel' that has components that can be dragged.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IDragDrop<T>
+    public interface IHandleDrag<T>
     {
-        T GetDataTransferItem(string transferItemKey);
+        IDragEvents<T> GetDragEventHandler(string key);
+    }
+
+    /// <summary>
+    /// Should be implemented on the 'viewmodel' that has componenents that can be dropped on.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public interface IHandleDrop<T>
+    {
+        IDropEvents<T> GetDropEventHandler(string key);
+    }
+
+    /// <summary>
+    /// Should be implemented on the 'viewmodel' that has components that should react to a drag over
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public interface IHandleDragOver<T>
+    {
+        IDragOverEvents<T> GetDragOverEventHandler(string key);
     }
 
     /// <summary>
     /// Should be implemented on each individual component that can be dragged.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IDrag<T>
+    public interface IDragEvents<T>
     {
-        string GetDragKey();
         void OnItemDrag(UIDragEventArgs e, T dataTransfer);
         void OnItemDragStart(UIDragEventArgs e, T dataTransfer);
         void OnItemDragEnd(UIDragEventArgs e, T dataTransfer);
     }
 
     /// <summary>
-    /// Should be implemented on each individual component that can be dropped on
+    /// Should be implemented on each individual component that can be dropped on.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IDrop<T>
+    public interface IDropEvents<T>
+    {
+        void OnContainerDrop(UIDragEventArgs e, T dataTransfer);
+    }
+
+    /// <summary>
+    /// Should be implemented on each individual compononet that should react to a drag over.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public interface IDragOverEvents<T>
     {
         void OnContainerDragEnter(UIDragEventArgs e, T dataTransfer);
-        void OnContainerDrop(UIDragEventArgs e, T dataTransfer);
         void OnContainerDragLeave(UIDragEventArgs e, T dataTransfer);
         void OnDragOver(UIDragEventArgs e, T dataTransfer);
     }

@@ -147,6 +147,10 @@ app {
         white-space: normal;
     }
 
+    div.listviewouter{
+        border: 2px solid black;
+    }
+
     span.listviewinner{
         border:none;
     }
@@ -171,6 +175,17 @@ app {
         display: inline-block;
         vertical-align: top;
         white-space: nowrap;
+    }
+
+    .list-viewwrapper{
+        width: 272px;
+        margin: 0 4px;
+        height: 100%;
+        box-sizing: border-box;
+        display: inline-block;
+        vertical-align: top;
+        white-space: nowrap;
+        border: 2px solid black;
     }
 
     .list-header{        

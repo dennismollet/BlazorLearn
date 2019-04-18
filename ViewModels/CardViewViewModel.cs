@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Microsoft.AspNetCore.Blazor;
 
 namespace Blazor.ViewModels
 {
-    public class CardViewViewModel : IBindList, INotifyPropertyChanged
+    public class CardViewViewModel : IBindList, INotifyPropertyChanged, IHandleDrag<CardViewItemModel>
     {
-        public CardViewViewModel()
+        public CardViewViewModel(IDragEvents<CardViewItemModel> dragger)
         {
+            Dragger = dragger;
             LocalData = CreateLocalData();
         }
 
@@ -23,21 +25,45 @@ namespace Blazor.ViewModels
             //new CardViewItem(),
         };
 
+        private IDragEvents<CardViewItemModel> Dragger { get; }
+        public IDragEvents<CardViewItemModel> GetDragEventHandler(string key) => Dragger;
+
         private List<IBind> LocalData { get; }
     }
 
-    internal class CardViewItem : BindableBase
+    public class CardViewItemModel : BindableBase
     {
-        public CardViewItem(Dictionary<string, IProperty> properties)
+        public CardViewItemModel(Dictionary<string, IProperty> properties)
             : base(properties)
         {
 
         }
 
-        public CardViewItem(IEnumerable<IProperty> properties)
+        public CardViewItemModel(IEnumerable<IProperty> properties)
             : base(properties)
         {
 
+        }
+
+        public string Text => "text";
+    }
+
+
+    public class CardViewItemDragger : IDragEvents<CardViewItemModel>
+    {
+        public void OnItemDrag(UIDragEventArgs e, CardViewItemModel dataTransfer)
+        {
+            System.Console.WriteLine($"Currently dragging {dataTransfer.Text}");
+        }
+
+        public void OnItemDragEnd(UIDragEventArgs e, CardViewItemModel dataTransfer)
+        {
+            System.Console.WriteLine($"Finished dragging {dataTransfer.Text}");
+        }
+
+        public void OnItemDragStart(UIDragEventArgs e, CardViewItemModel dataTransfer)
+        {
+            System.Console.WriteLine($"Started dragging {dataTransfer.Text}");
         }
     }
 }
